@@ -42,9 +42,6 @@ jobs:
 
   windows:
     runs-on: windows-latest
-    defaults:
-      run:
-        shell: msys2 {0}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
@@ -64,14 +61,20 @@ jobs:
       - name: Add Inno Setup to PATH
         shell: pwsh
         run: '"C:\Program Files (x86)\Inno Setup 6" | Out-File -FilePath $env:GITHUB_PATH -Append'
-      - name: Download Go modules
-        run: make tidy
       - name: Generate missing Windows files and restore custom configs
         run: |
           flutter create --platforms=windows --project-name fastflow_vpn .
           git checkout -- windows/runner/CMakeLists.txt windows/runner/runner.exe.manifest
+      - name: Build Go engine and daemon
+        shell: msys2 {0}
+        run: |
+          make tidy
+          make engine-windows
+          make daemon-windows
+      - name: Build Flutter App
+        run: flutter build windows -t main.dart --release
       - name: Build Windows installer
-        run: make installer-windows
+        run: iscc installer/inno_setup.iss
       - uses: actions/upload-artifact@v4
         with:
           name: fastflow-setup

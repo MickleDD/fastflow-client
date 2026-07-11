@@ -50,7 +50,7 @@ class WindowsSystemProxyManager {
       final wininet = DynamicLibrary.open('wininet.dll');
       final internetSetOption = wininet.lookupFunction<
           Int32 Function(Pointer, Uint32, Pointer, Uint32),
-          int Function(Pointer, Uint32, Pointer, Uint32)>('InternetSetOptionW');
+          int Function(Pointer, int, Pointer, int)>('InternetSetOptionW');
       internetSetOption(nullptr, internetOptionSettingsChanged, nullptr, 0);
       internetSetOption(nullptr, internetOptionRefresh, nullptr, 0);
     } catch (_) {

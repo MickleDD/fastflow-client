@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:sqflite/sqflite.dart';
 
 import '../../core/domain/models/app_settings.dart';
 import '../../core/domain/repositories/i_settings_repository.dart';

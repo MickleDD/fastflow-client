@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:sqflite/sqflite.dart';
 
 import '../../core/domain/models/proxy_profile.dart';
 import '../../core/domain/repositories/i_profile_repository.dart';
