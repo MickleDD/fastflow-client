@@ -28,6 +28,8 @@ jobs:
         with:
           flutter-version: 3.24.0
           channel: stable
+      - name: Download Go modules
+        run: make tidy
       - name: Build Android APK
         env:
           ANDROID_NDK_HOME: ${{ steps.ndk.outputs.ndk-path }}
@@ -62,6 +64,8 @@ jobs:
       - name: Add Inno Setup to PATH
         shell: pwsh
         run: '"C:\Program Files (x86)\Inno Setup 6" | Out-File -FilePath $env:GITHUB_PATH -Append'
+      - name: Download Go modules
+        run: make tidy
       - name: Build Windows installer
         run: make installer-windows
       - uses: actions/upload-artifact@v4
