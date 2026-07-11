@@ -27,7 +27,6 @@ import (
 	"github.com/sagernet/sing-box/experimental/libbox/platform"
 	"github.com/sagernet/sing-box/option"
 	tun "github.com/sagernet/sing-tun"
-	"github.com/sagernet/sing/common/control"
 	"github.com/sagernet/sing/common/logger"
 	"github.com/sagernet/sing/service"
 )
