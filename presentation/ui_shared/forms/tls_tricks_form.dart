@@ -39,8 +39,7 @@ class TlsTricksForm extends StatelessWidget {
             onChanged: (v) => onChanged(value.copyWith(utlsFingerprint: v)),
           ),
           SwitchListTile(
-            title: const Text('Allow insecure (skip cert verify)'),
-            subtitle: const Text('Never enable in production'),
+            title: const Text('Skip certificate verification'),
             value: value.allowInsecure,
             onChanged: (v) => onChanged(value.copyWith(allowInsecure: v)),
           ),

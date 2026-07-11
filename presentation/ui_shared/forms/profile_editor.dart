@@ -4,13 +4,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/domain/enums/flow_type.dart';
 import '../../../core/domain/models/proxy_profile.dart';
+import '../../../core/parsing/vless_parser.dart';
 import '../../state/profile_list_mgr.dart';
 import 'tls_tricks_form.dart';
 
-/// Create/edit a [ProxyProfile]. Exposes every protocol feature: VLESS with all
-/// transports + Vision flow + MUX, and Hysteria2 with obfs + bandwidth, plus the
-/// embedded [TlsTricksForm]. Text lives in controllers; enums/nested config in a
-/// working draft.
+/// Create/edit a [ProxyProfile]. The main view asks only for the essentials
+/// (name, server, port, protocol, credential) and offers a one-tap
+/// "Import from Clipboard" that fills the form from a `vless://` link. Every
+/// power-user knob — transport, Vision flow, MUX, and the [TlsTricksForm] — is
+/// tucked inside a collapsed "Advanced Settings" section. Text lives in
+/// controllers; enums/nested config in a working draft.
 class ProfileEditor extends ConsumerStatefulWidget {
   final ProxyProfile? existing;
 
@@ -84,6 +87,51 @@ class _ProfileEditorState extends ConsumerState<ProfileEditor> {
     Navigator.of(context).maybePop(profile);
   }
 
+  /// Reads a `vless://` link from the clipboard and pre-fills the whole form.
+  Future<void> _importFromClipboard() async {
+    final data = await Clipboard.getData(Clipboard.kTextPlain);
+    if (!mounted) return;
+    final messenger = ScaffoldMessenger.of(context);
+    final text = data?.text?.trim() ?? '';
+
+    if (text.isEmpty) {
+      messenger.showSnackBar(
+        const SnackBar(content: Text('Clipboard is empty')),
+      );
+      return;
+    }
+
+    final parsed = VlessParser.tryParse(text);
+    if (parsed == null) {
+      messenger.showSnackBar(
+        const SnackBar(content: Text('No valid vless:// link on the clipboard')),
+      );
+      return;
+    }
+
+    // Keep this profile's identity; adopt everything else from the link.
+    _applyProfile(parsed.copyWith(id: _draft.id));
+    messenger.showSnackBar(
+      const SnackBar(content: Text('Imported from clipboard')),
+    );
+  }
+
+  /// Replaces the working draft and re-syncs every text controller.
+  void _applyProfile(ProxyProfile p) {
+    setState(() {
+      _draft = p;
+      _name.text = p.name;
+      _server.text = p.serverAddress;
+      _port.text = p.port.toString();
+      _uuid.text = p.uuid;
+      _password.text = p.password;
+      _path.text = p.transport.path;
+      _host.text = p.transport.host;
+      _serviceName.text = p.transport.serviceName;
+      _obfs.text = p.hysteriaObfsPassword;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final isVless = _draft.protocol == ProxyProtocol.vless;
@@ -98,6 +146,15 @@ class _ProfileEditorState extends ConsumerState<ProfileEditor> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          // One-tap setup: paste a vless:// link and auto-fill everything.
+          OutlinedButton.icon(
+            onPressed: _importFromClipboard,
+            icon: const Icon(Icons.content_paste_go_outlined),
+            label: const Text('Import from Clipboard'),
+          ),
+          const SizedBox(height: 12),
+
+          // ---- Essentials: the bare minimum a user must provide ------------
           TextField(
             controller: _name,
             decoration: const InputDecoration(labelText: 'Name'),
@@ -114,13 +171,39 @@ class _ProfileEditorState extends ConsumerState<ProfileEditor> {
           ),
           const SizedBox(height: 8),
           _protocolDropdown(),
-          const Divider(),
-          if (isVless) ..._vlessFields() else ..._hysteria2Fields(),
-          const Divider(),
-          Text('TLS', style: Theme.of(context).textTheme.titleMedium),
-          TlsTricksForm(
-            value: _draft.tls,
-            onChanged: (tls) => setState(() => _draft = _draft.copyWith(tls: tls)),
+          if (isVless)
+            TextField(
+              controller: _uuid,
+              decoration: const InputDecoration(labelText: 'UUID'),
+            )
+          else
+            TextField(
+              controller: _password,
+              decoration: const InputDecoration(labelText: 'Password'),
+            ),
+
+          // ---- Everything technical, collapsed away by default -------------
+          const SizedBox(height: 12),
+          Theme(
+            data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+            child: ExpansionTile(
+              tilePadding: EdgeInsets.zero,
+              childrenPadding: EdgeInsets.zero,
+              leading: const Icon(Icons.tune),
+              title: const Text('Advanced Settings'),
+              subtitle:
+                  const Text('Transport, MUX, TLS tricks — optional'),
+              children: [
+                if (isVless) ..._vlessAdvanced() else ..._hysteria2Advanced(),
+                const Divider(),
+                Text('TLS', style: Theme.of(context).textTheme.titleMedium),
+                TlsTricksForm(
+                  value: _draft.tls,
+                  onChanged: (tls) =>
+                      setState(() => _draft = _draft.copyWith(tls: tls)),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -128,6 +211,7 @@ class _ProfileEditorState extends ConsumerState<ProfileEditor> {
   }
 
   Widget _protocolDropdown() => ListTile(
+        contentPadding: EdgeInsets.zero,
         title: const Text('Protocol'),
         trailing: DropdownButton<ProxyProtocol>(
           value: _draft.protocol,
@@ -141,12 +225,11 @@ class _ProfileEditorState extends ConsumerState<ProfileEditor> {
         ),
       );
 
-  List<Widget> _vlessFields() => [
-        TextField(
-          controller: _uuid,
-          decoration: const InputDecoration(labelText: 'UUID'),
-        ),
+  /// VLESS knobs that non-technical users rarely touch — flow, transport and
+  /// multiplexing. Lives inside "Advanced Settings"; UUID stays up top.
+  List<Widget> _vlessAdvanced() => [
         ListTile(
+          contentPadding: EdgeInsets.zero,
           title: const Text('Flow'),
           trailing: DropdownButton<FlowType>(
             value: _draft.flow,
@@ -159,6 +242,7 @@ class _ProfileEditorState extends ConsumerState<ProfileEditor> {
           ),
         ),
         ListTile(
+          contentPadding: EdgeInsets.zero,
           title: const Text('Transport'),
           trailing: DropdownButton<TransportType>(
             value: _draft.transport.type,
@@ -194,6 +278,7 @@ class _ProfileEditorState extends ConsumerState<ProfileEditor> {
         const Divider(),
         // MUX.
         SwitchListTile(
+          contentPadding: EdgeInsets.zero,
           title: const Text('Multiplex (MUX)'),
           subtitle: const Text('Disabled automatically with Vision flow'),
           value: _draft.mux.enabled,
@@ -202,6 +287,7 @@ class _ProfileEditorState extends ConsumerState<ProfileEditor> {
         ),
         if (_draft.mux.enabled)
           ListTile(
+            contentPadding: EdgeInsets.zero,
             title: const Text('MUX protocol'),
             trailing: DropdownButton<MuxProtocol>(
               value: _draft.mux.protocol,
@@ -219,11 +305,8 @@ class _ProfileEditorState extends ConsumerState<ProfileEditor> {
           ),
       ];
 
-  List<Widget> _hysteria2Fields() => [
-        TextField(
-          controller: _password,
-          decoration: const InputDecoration(labelText: 'Password'),
-        ),
+  /// Hysteria2 tuning — obfuscation and bandwidth hints. Password stays up top.
+  List<Widget> _hysteria2Advanced() => [
         TextField(
           controller: _obfs,
           decoration: const InputDecoration(

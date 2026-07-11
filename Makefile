@@ -23,12 +23,14 @@ engine-android:
 	cd $(ENGINE_DIR) && \
 	CGO_ENABLED=1 GOOS=android GOARCH=arm64 \
 	CC=$(NDK_BIN)/aarch64-linux-android21-clang \
-	go build -buildmode=c-shared -trimpath -ldflags="-s -w" \
+	go build -tags with_utls,with_reality_client,with_clash_api \
+	  -buildmode=c-shared -trimpath -ldflags="-s -w" \
 	  -o $(CURDIR)/$(ANDROID_JNILIBS)/arm64-v8a/libvpn_engine.so .
 	cd $(ENGINE_DIR) && \
 	CGO_ENABLED=1 GOOS=android GOARCH=arm \
 	CC=$(NDK_BIN)/armv7a-linux-androideabi21-clang \
-	go build -buildmode=c-shared -trimpath -ldflags="-s -w" \
+	go build -tags with_utls,with_reality_client,with_clash_api \
+	  -buildmode=c-shared -trimpath -ldflags="-s -w" \
 	  -o $(CURDIR)/$(ANDROID_JNILIBS)/armeabi-v7a/libvpn_engine.so .
 
 # --- Windows engine (cross-compiled from Linux via mingw, or native) --------
@@ -37,7 +39,8 @@ engine-windows:
 	cd $(ENGINE_DIR) && \
 	CGO_ENABLED=1 GOOS=windows GOARCH=amd64 \
 	CC=x86_64-w64-mingw32-gcc \
-	go build -buildmode=c-shared -trimpath -ldflags="-s -w" \
+	go build -tags with_utls,with_reality_client,with_clash_api \
+	  -buildmode=c-shared -trimpath -ldflags="-s -w" \
 	  -o $(CURDIR)/$(WINDOWS_ENGINE_DLL) .
 
 # --- Flutter apps -----------------------------------------------------------
