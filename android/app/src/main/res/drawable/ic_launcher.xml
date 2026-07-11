@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Vector launcher/notification icon (placeholder shield). Vector avoids
+     committing binary density PNGs; swap for a real adaptive icon before release. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#3F51B5"
+        android:pathData="M54,14 L86,26 L86,52 C86,74 72,90 54,96 C36,90 22,74 22,52 L22,26 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M46,58 L40,52 L35,57 L46,68 L74,40 L69,35 Z" />
+</vector>

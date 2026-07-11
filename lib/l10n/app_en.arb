@@ -1,0 +1,73 @@
+{
+  "@@locale": "en",
+
+  "appTitle": "FastFlow VPN",
+  "@appTitle": {
+    "description": "Application name shown in the OS task switcher and the mobile app bar. Brand name — usually left untranslated."
+  },
+
+  "navHome": "Home",
+  "@navHome": {
+    "description": "Label for the Home destination in the bottom navigation bar / navigation rail."
+  },
+
+  "navSettings": "Settings",
+  "@navSettings": {
+    "description": "Label for the Settings destination in the bottom navigation bar / navigation rail."
+  },
+
+  "newProfile": "New profile",
+  "@newProfile": {
+    "description": "Tooltip on the '+' button that opens the profile editor to create a new proxy profile."
+  },
+
+  "connect": "Connect",
+  "@connect": {
+    "description": "Label on the connect FAB when the tunnel is disconnected."
+  },
+
+  "disconnect": "Disconnect",
+  "@disconnect": {
+    "description": "Label on the connect FAB when the tunnel is connected."
+  },
+
+  "connecting": "Connecting…",
+  "@connecting": {
+    "description": "Label on the connect FAB while the tunnel is establishing a connection."
+  },
+
+  "disconnecting": "Disconnecting…",
+  "@disconnecting": {
+    "description": "Label on the connect FAB while the tunnel is tearing down the connection."
+  },
+
+  "retry": "Retry",
+  "@retry": {
+    "description": "Label on the connect FAB after a connection error, prompting the user to try again."
+  },
+
+  "settingsRouting": "Routing",
+  "@settingsRouting": {
+    "description": "Title of the Routing tab in Settings."
+  },
+
+  "settingsDns": "DNS",
+  "@settingsDns": {
+    "description": "Title of the DNS tab in Settings. Acronym — usually left untranslated."
+  },
+
+  "settingsTunOs": "TUN / OS",
+  "@settingsTunOs": {
+    "description": "Title of the TUN / OS-integration tab in Settings."
+  },
+
+  "killSwitch": "Kill switch",
+  "@killSwitch": {
+    "description": "Title of the setting that blocks all non-VPN traffic when the tunnel drops."
+  },
+
+  "tunMode": "TUN mode",
+  "@tunMode": {
+    "description": "Title of the setting that selects the TUN stack implementation."
+  }
+}

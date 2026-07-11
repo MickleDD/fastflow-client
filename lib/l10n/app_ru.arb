@@ -1,0 +1,18 @@
+{
+  "@@locale": "ru",
+
+  "appTitle": "FastFlow VPN",
+  "navHome": "Главная",
+  "navSettings": "Настройки",
+  "newProfile": "Новый профиль",
+  "connect": "Подключить",
+  "disconnect": "Отключить",
+  "connecting": "Подключение…",
+  "disconnecting": "Отключение…",
+  "retry": "Повторить",
+  "settingsRouting": "Маршрутизация",
+  "settingsDns": "DNS",
+  "settingsTunOs": "TUN / ОС",
+  "killSwitch": "Аварийное отключение",
+  "tunMode": "Режим TUN"
+}

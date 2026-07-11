@@ -1,0 +1,18 @@
+{
+  "@@locale": "es",
+
+  "appTitle": "FastFlow VPN",
+  "navHome": "Inicio",
+  "navSettings": "Ajustes",
+  "newProfile": "Nuevo perfil",
+  "connect": "Conectar",
+  "disconnect": "Desconectar",
+  "connecting": "Conectando…",
+  "disconnecting": "Desconectando…",
+  "retry": "Reintentar",
+  "settingsRouting": "Enrutamiento",
+  "settingsDns": "DNS",
+  "settingsTunOs": "TUN / SO",
+  "killSwitch": "Interruptor de emergencia",
+  "tunMode": "Modo TUN"
+}

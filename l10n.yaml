@@ -1,0 +1,15 @@
+# Configuration for `flutter gen-l10n` (run automatically on `flutter pub get`
+# because `generate: true` is set in pubspec.yaml).
+#
+# ARB sources and the generated Dart both live under lib/l10n/. We deliberately
+# opt OUT of the deprecated synthetic `package:flutter_gen` package: the code is
+# generated straight into the source tree, so it can be imported like any other
+# library. Because it sits under lib/, it is reachable from anywhere in the app
+# (root entrypoint, presentation/, …) via a stable package URI:
+#
+#   import 'package:fastflow_vpn/l10n/app_localizations.dart';
+arb-dir: lib/l10n
+template-arb-file: app_en.arb
+output-localization-file: app_localizations.dart
+output-class: AppLocalizations
+synthetic-package: false

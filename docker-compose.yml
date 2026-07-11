@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  build-env:
+    build: .
+    volumes:
+      - .:/app
+    environment:
+      - ENV_FILE=.env
+    tty: true

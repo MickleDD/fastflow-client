@@ -1,0 +1,17 @@
+{
+  "@@locale": "zh_Hant",
+  "appTitle": "FastFlow VPN",
+  "navHome": "首頁",
+  "navSettings": "設定",
+  "newProfile": "新建設定檔",
+  "connect": "連線",
+  "disconnect": "中斷連線",
+  "connecting": "連線中...",
+  "disconnecting": "中斷連線中...",
+  "retry": "重試",
+  "settingsRouting": "路由",
+  "settingsDns": "DNS",
+  "settingsTunOs": "TUN / OS",
+  "killSwitch": "終止開關",
+  "tunMode": "TUN 模式"
+}
