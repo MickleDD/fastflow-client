@@ -92,12 +92,11 @@ func (p *androidPlatform) OpenTun(options *tun.Options, _ option.TunPlatformOpti
 // The core uses its own interface monitor / getter on Android; we defer to it.
 func (p *androidPlatform) UsePlatformDefaultInterfaceMonitor() bool { return true }
 func (p *androidPlatform) UsePlatformInterfaceGetter() bool         { return true }
-
 func (p *androidPlatform) CreateDefaultInterfaceMonitor(logger.Logger) tun.DefaultInterfaceMonitor {
 	return nil
 }
 
-func (p *androidPlatform) Interfaces() ([]control.Interface, error) {
+func (p *androidPlatform) Interfaces() ([]adapter.NetworkInterface, error) {
 	return nil, os.ErrInvalid
 }
 

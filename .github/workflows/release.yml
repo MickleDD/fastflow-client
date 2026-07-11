@@ -66,6 +66,10 @@ jobs:
         run: '"C:\Program Files (x86)\Inno Setup 6" | Out-File -FilePath $env:GITHUB_PATH -Append'
       - name: Download Go modules
         run: make tidy
+      - name: Generate missing Windows files and restore custom configs
+        run: |
+          flutter create --platforms=windows .
+          git checkout -- windows/runner/CMakeLists.txt windows/runner/runner.exe.manifest
       - name: Build Windows installer
         run: make installer-windows
       - uses: actions/upload-artifact@v4
