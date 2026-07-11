@@ -7,7 +7,7 @@
 //	char* StartEngine(char* configJson)  -> heap string "SUCCESS" or "ERROR: <msg>"; caller must FreeString it.
 //	void  StopEngine()                   -> stops the running instance, blocks until closed.
 //	char* GetStatus()                    -> heap string: "stopped" | "starting" | "running" | "stopping" | "error".
-//	char* GetLastError()                 -> heap string with the last fatal error (or "").
+//	char* GetEngineLastError()                 -> heap string with the last fatal error (or "").
 //	char* GetStats()                     -> heap JSON string {"uplink":..,"downlink":..,"uplinkTotal":..,"downlinkTotal":..}.
 //	void  SetTunFd(int fd)               -> Android only: file descriptor produced by VpnService.establish().
 //	void  FreeString(char* ptr)          -> frees a string previously returned by this library.
@@ -239,8 +239,8 @@ func GetStatus() *C.char {
 	return C.CString(engineStatus(eng.status.Load()).String())
 }
 
-//export GetLastError
-func GetLastError() *C.char {
+//export GetEngineLastError
+func GetEngineLastError() *C.char {
 	p := eng.lastError.Load()
 	if p == nil {
 		return C.CString("")

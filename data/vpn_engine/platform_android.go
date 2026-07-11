@@ -19,6 +19,7 @@ package main
 
 import (
 	"context"
+	"net/netip"
 	"os"
 
 	"github.com/sagernet/sing-box/adapter"
@@ -108,10 +109,10 @@ func (p *androidPlatform) ClearDNSCache() {}
 
 func (p *androidPlatform) ReadWIFIState() adapter.WIFIState { return adapter.WIFIState{} }
 
-// FindProcessInfo (process.Searcher) — per-app routing by uid requires reading
+// FindProcessInfo (process.Searcher)   per-app routing by uid requires reading
 // the Android proc table, which the Java side owns. Returning ErrInvalid tells
 // the core process-based rules are unavailable through this bridge.
-func (p *androidPlatform) FindProcessInfo(context.Context, string, string, string) (*process.Info, error) {
+func (p *androidPlatform) FindProcessInfo(ctx context.Context, network string, source netip.AddrPort, destination netip.AddrPort) (*process.Info, error) {
 	return nil, os.ErrInvalid
 }
 

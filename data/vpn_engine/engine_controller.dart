@@ -65,7 +65,7 @@ class EngineController {
     _getStatus =
         _lib.lookupFunction<_StringGetterC, _StringGetterDart>('GetStatus');
     _getLastError =
-        _lib.lookupFunction<_StringGetterC, _StringGetterDart>('GetLastError');
+        _lib.lookupFunction<_StringGetterC, _StringGetterDart>('GetEngineLastError');
     _getStats =
         _lib.lookupFunction<_StringGetterC, _StringGetterDart>('GetStats');
     _setTunFd = _lib.lookupFunction<_SetTunFdC, _SetTunFdDart>('SetTunFd');
