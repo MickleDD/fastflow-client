@@ -20,6 +20,7 @@ class SingBoxConfigBuilder {
     AppSettings settings, {
     required InboundMode mode,
     required InboundSession session,
+    String? cachePath,
   }) {
     final config = <String, dynamic>{
       'log': {'level': 'warn', 'timestamp': true},
@@ -27,19 +28,24 @@ class SingBoxConfigBuilder {
       'inbounds': InboundBuilder.build(settings, mode: mode, session: session),
       'outbounds': OutboundBuilder.build(profile),
       'route': RoutingBuilder.build(settings),
-      'experimental': _experimental(settings, session),
+      'experimental': _experimental(settings, session, cachePath),
     };
     return config;
   }
 
-  /// Serialized config ready to hand to `EngineController.start`.
+  /// Serialized config ready to hand to `EngineController.start`. [cachePath] is
+  /// the absolute, writable location for sing-box's `cache.db` (see
+  /// [_experimental]); callers on desktop MUST supply one to avoid the
+  /// working-directory write that crashes under `C:\Program Files\`.
   static String build(
     ProxyProfile profile,
     AppSettings settings, {
     required InboundMode mode,
     required InboundSession session,
+    String? cachePath,
   }) =>
-      jsonEncode(buildMap(profile, settings, mode: mode, session: session));
+      jsonEncode(buildMap(profile, settings,
+          mode: mode, session: session, cachePath: cachePath));
 
   /// Pretty-printed variant for the "export config" / debug screens. Secrets
   /// (proxy credentials, clash-api secret) are redacted by default so an
@@ -59,10 +65,26 @@ class SingBoxConfigBuilder {
   static Map<String, dynamic> _experimental(
     AppSettings s,
     InboundSession session,
+    String? cachePath,
   ) {
     final exp = <String, dynamic>{
-      // Persist fake-IP mappings across restarts so cached apps keep working.
-      'cache_file': {'enabled': true, 'store_fakeip': true},
+      // Persist fake-IP mappings and the rule-set cache across restarts so
+      // cached apps keep working and rule-sets are not re-downloaded on every
+      // connect.
+      //
+      // `path` MUST be an explicit writable location. sing-box otherwise writes
+      // `cache.db` relative to the process working directory; for an installed
+      // Windows build that is the program folder under `C:\Program Files\`,
+      // which is not user-writable, so the core aborts at start with
+      // "Access is denied". The caller (VpnEngineService) resolves this to the
+      // app-support directory — the same writable root the SQLite DB uses. When
+      // no path is supplied (config export / unit tests) we fall back to the
+      // default relative filename, which is never actually opened.
+      'cache_file': {
+        'enabled': true,
+        'store_fakeip': true,
+        if (cachePath != null && cachePath.isNotEmpty) 'path': cachePath,
+      },
     };
 
     if (s.enableStats) {

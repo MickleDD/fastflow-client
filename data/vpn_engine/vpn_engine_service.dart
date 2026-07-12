@@ -1,3 +1,6 @@
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
+
 import '../../core/domain/enums/inbound_mode.dart';
 import '../../core/domain/models/app_settings.dart';
 import '../../core/domain/models/connection_state.dart';
@@ -19,6 +22,10 @@ class VpnEngineService implements IVpnEngine {
   VpnEngineService({EngineController? engine})
       : _engine = engine ?? EngineController();
 
+  /// Filename for sing-box's on-disk cache, kept alongside the app database in
+  /// the writable app-support directory (never the process working directory).
+  static const String _cacheFileName = 'sing-box-cache.db';
+
   @override
   Future<EngineStartResult> start(
     ProxyProfile profile,
@@ -31,6 +38,7 @@ class VpnEngineService implements IVpnEngine {
       settings,
       mode: mode,
       session: session,
+      cachePath: await _resolveCachePath(),
     );
     final error = await _engine.start(config);
     if (error != null) return EngineStartResult.failure(error);
@@ -39,6 +47,19 @@ class VpnEngineService implements IVpnEngine {
     return EngineStartResult.success(
       systemProxy: sysPort == null ? null : (host: '127.0.0.1', port: sysPort),
     );
+  }
+
+  /// Absolute, writable path for sing-box's `cache.db`, under the platform
+  /// app-support directory (Android app-private storage; Windows %APPDATA%).
+  /// Returns null if the directory can't be resolved, in which case the builder
+  /// omits the path — better a start without persistent cache than a crash.
+  Future<String?> _resolveCachePath() async {
+    try {
+      final dir = await getApplicationSupportDirectory();
+      return p.join(dir.path, _cacheFileName);
+    } catch (_) {
+      return null;
+    }
   }
 
   @override

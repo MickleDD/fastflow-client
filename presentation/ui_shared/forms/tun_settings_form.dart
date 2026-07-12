@@ -142,15 +142,12 @@ class TunSettingsForm extends ConsumerWidget {
             onChanged: (v) =>
                 notifier.patch((s) => s.copyWith(windowsNoAdminFallback: v)),
           ),
-        SwitchListTile(
-          title: const Text('External control API (debug)'),
-          subtitle: const Text(
-              'Clash API on 127.0.0.1, random port, new access token every '
-              'connection. Leave off unless debugging.'),
-          value: settings.debugApiEnabled,
-          onChanged: (v) =>
-              notifier.patch((s) => s.copyWith(debugApiEnabled: v)),
-        ),
+        // NOTE: the "External control API (debug)" (Clash API) toggle was
+        // removed from the consumer UI. It is a developer diagnostic, unrelated
+        // to the traffic meter (which reads the in-process stats service over
+        // FFI), so hiding it does not affect throughput stats. `debugApiEnabled`
+        // stays in the model defaulting to off, so the Clash listener is never
+        // opened in shipping builds.
       ],
     );
   }

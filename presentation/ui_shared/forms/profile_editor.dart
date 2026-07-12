@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:fastflow_vpn/l10n/app_localizations.dart';
+
 import '../../../core/domain/enums/flow_type.dart';
 import '../../../core/domain/models/proxy_profile.dart';
 import '../../../core/parsing/vless_parser.dart';
@@ -71,7 +73,9 @@ class _ProfileEditorState extends ConsumerState<ProfileEditor> {
 
   void _save() {
     final profile = _draft.copyWith(
-      name: _name.text.trim().isEmpty ? 'Unnamed' : _name.text.trim(),
+      name: _name.text.trim().isEmpty
+          ? AppLocalizations.of(context)!.unnamedProfile
+          : _name.text.trim(),
       serverAddress: _server.text.trim(),
       port: int.tryParse(_port.text) ?? 443,
       uuid: _uuid.text.trim(),
@@ -91,12 +95,13 @@ class _ProfileEditorState extends ConsumerState<ProfileEditor> {
   Future<void> _importFromClipboard() async {
     final data = await Clipboard.getData(Clipboard.kTextPlain);
     if (!mounted) return;
+    final l10n = AppLocalizations.of(context)!;
     final messenger = ScaffoldMessenger.of(context);
     final text = data?.text?.trim() ?? '';
 
     if (text.isEmpty) {
       messenger.showSnackBar(
-        const SnackBar(content: Text('Clipboard is empty')),
+        SnackBar(content: Text(l10n.clipboardEmpty)),
       );
       return;
     }
@@ -104,7 +109,7 @@ class _ProfileEditorState extends ConsumerState<ProfileEditor> {
     final parsed = VlessParser.tryParse(text);
     if (parsed == null) {
       messenger.showSnackBar(
-        const SnackBar(content: Text('No valid vless:// link on the clipboard')),
+        SnackBar(content: Text(l10n.clipboardNoVlessLink)),
       );
       return;
     }
@@ -112,7 +117,7 @@ class _ProfileEditorState extends ConsumerState<ProfileEditor> {
     // Keep this profile's identity; adopt everything else from the link.
     _applyProfile(parsed.copyWith(id: _draft.id));
     messenger.showSnackBar(
-      const SnackBar(content: Text('Imported from clipboard')),
+      SnackBar(content: Text(l10n.importedFromClipboard)),
     );
   }
 
@@ -134,11 +139,12 @@ class _ProfileEditorState extends ConsumerState<ProfileEditor> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isVless = _draft.protocol == ProxyProtocol.vless;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.existing == null ? 'New profile' : 'Edit profile'),
+        title: Text(widget.existing == null ? l10n.newProfile : l10n.editProfile),
         actions: [
           IconButton(onPressed: _save, icon: const Icon(Icons.save)),
         ],
@@ -150,36 +156,36 @@ class _ProfileEditorState extends ConsumerState<ProfileEditor> {
           OutlinedButton.icon(
             onPressed: _importFromClipboard,
             icon: const Icon(Icons.content_paste_go_outlined),
-            label: const Text('Import from Clipboard'),
+            label: Text(l10n.importFromClipboard),
           ),
           const SizedBox(height: 12),
 
           // ---- Essentials: the bare minimum a user must provide ------------
           TextField(
             controller: _name,
-            decoration: const InputDecoration(labelText: 'Name'),
+            decoration: InputDecoration(labelText: l10n.fieldName),
           ),
           TextField(
             controller: _server,
-            decoration: const InputDecoration(labelText: 'Server address'),
+            decoration: InputDecoration(labelText: l10n.fieldServerAddress),
           ),
           TextField(
             controller: _port,
             keyboardType: TextInputType.number,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            decoration: const InputDecoration(labelText: 'Port'),
+            decoration: InputDecoration(labelText: l10n.fieldPort),
           ),
           const SizedBox(height: 8),
-          _protocolDropdown(),
+          _protocolDropdown(l10n),
           if (isVless)
             TextField(
               controller: _uuid,
-              decoration: const InputDecoration(labelText: 'UUID'),
+              decoration: InputDecoration(labelText: l10n.fieldUuid),
             )
           else
             TextField(
               controller: _password,
-              decoration: const InputDecoration(labelText: 'Password'),
+              decoration: InputDecoration(labelText: l10n.fieldPassword),
             ),
 
           // ---- Everything technical, collapsed away by default -------------
@@ -190,13 +196,16 @@ class _ProfileEditorState extends ConsumerState<ProfileEditor> {
               tilePadding: EdgeInsets.zero,
               childrenPadding: EdgeInsets.zero,
               leading: const Icon(Icons.tune),
-              title: const Text('Advanced Settings'),
-              subtitle:
-                  const Text('Transport, MUX, TLS tricks — optional'),
+              title: Text(l10n.advancedSettings),
+              subtitle: Text(l10n.advancedSettingsSubtitle),
               children: [
-                if (isVless) ..._vlessAdvanced() else ..._hysteria2Advanced(),
+                if (isVless)
+                  ..._vlessAdvanced(l10n)
+                else
+                  ..._hysteria2Advanced(l10n),
                 const Divider(),
-                Text('TLS', style: Theme.of(context).textTheme.titleMedium),
+                Text(l10n.sectionTls,
+                    style: Theme.of(context).textTheme.titleMedium),
                 TlsTricksForm(
                   value: _draft.tls,
                   onChanged: (tls) =>
@@ -210,9 +219,9 @@ class _ProfileEditorState extends ConsumerState<ProfileEditor> {
     );
   }
 
-  Widget _protocolDropdown() => ListTile(
+  Widget _protocolDropdown(AppLocalizations l10n) => ListTile(
         contentPadding: EdgeInsets.zero,
-        title: const Text('Protocol'),
+        title: Text(l10n.fieldProtocol),
         trailing: DropdownButton<ProxyProtocol>(
           value: _draft.protocol,
           onChanged: (v) {
@@ -227,10 +236,10 @@ class _ProfileEditorState extends ConsumerState<ProfileEditor> {
 
   /// VLESS knobs that non-technical users rarely touch — flow, transport and
   /// multiplexing. Lives inside "Advanced Settings"; UUID stays up top.
-  List<Widget> _vlessAdvanced() => [
+  List<Widget> _vlessAdvanced(AppLocalizations l10n) => [
         ListTile(
           contentPadding: EdgeInsets.zero,
-          title: const Text('Flow'),
+          title: Text(l10n.fieldFlow),
           trailing: DropdownButton<FlowType>(
             value: _draft.flow,
             onChanged: (v) {
@@ -243,7 +252,7 @@ class _ProfileEditorState extends ConsumerState<ProfileEditor> {
         ),
         ListTile(
           contentPadding: EdgeInsets.zero,
-          title: const Text('Transport'),
+          title: Text(l10n.fieldTransport),
           trailing: DropdownButton<TransportType>(
             value: _draft.transport.type,
             onChanged: (v) {
@@ -263,24 +272,24 @@ class _ProfileEditorState extends ConsumerState<ProfileEditor> {
             _draft.transport.type == TransportType.httpUpgrade) ...[
           TextField(
             controller: _path,
-            decoration: const InputDecoration(labelText: 'Path'),
+            decoration: InputDecoration(labelText: l10n.fieldPath),
           ),
           TextField(
             controller: _host,
-            decoration: const InputDecoration(labelText: 'Host header'),
+            decoration: InputDecoration(labelText: l10n.fieldHostHeader),
           ),
         ],
         if (_draft.transport.type == TransportType.grpc)
           TextField(
             controller: _serviceName,
-            decoration: const InputDecoration(labelText: 'gRPC service name'),
+            decoration: InputDecoration(labelText: l10n.fieldGrpcServiceName),
           ),
         const Divider(),
         // MUX.
         SwitchListTile(
           contentPadding: EdgeInsets.zero,
-          title: const Text('Multiplex (MUX)'),
-          subtitle: const Text('Disabled automatically with Vision flow'),
+          title: Text(l10n.muxTitle),
+          subtitle: Text(l10n.muxSubtitle),
           value: _draft.mux.enabled,
           onChanged: (v) => setState(
               () => _draft = _draft.copyWith(mux: _draft.mux.copyWith(enabled: v))),
@@ -288,7 +297,7 @@ class _ProfileEditorState extends ConsumerState<ProfileEditor> {
         if (_draft.mux.enabled)
           ListTile(
             contentPadding: EdgeInsets.zero,
-            title: const Text('MUX protocol'),
+            title: Text(l10n.muxProtocol),
             trailing: DropdownButton<MuxProtocol>(
               value: _draft.mux.protocol,
               onChanged: (v) {
@@ -306,18 +315,16 @@ class _ProfileEditorState extends ConsumerState<ProfileEditor> {
       ];
 
   /// Hysteria2 tuning — obfuscation and bandwidth hints. Password stays up top.
-  List<Widget> _hysteria2Advanced() => [
+  List<Widget> _hysteria2Advanced(AppLocalizations l10n) => [
         TextField(
           controller: _obfs,
-          decoration: const InputDecoration(
-            labelText: 'Obfs (salamander) password — empty to disable',
-          ),
+          decoration: InputDecoration(labelText: l10n.fieldObfsPassword),
         ),
         Row(
           children: [
             Expanded(
               child: _BandwidthField(
-                label: 'Up (Mbps)',
+                label: l10n.fieldUpMbps,
                 value: _draft.hysteriaUpMbps,
                 onChanged: (v) => setState(
                     () => _draft = _draft.copyWith(hysteriaUpMbps: v)),
@@ -326,7 +333,7 @@ class _ProfileEditorState extends ConsumerState<ProfileEditor> {
             const SizedBox(width: 12),
             Expanded(
               child: _BandwidthField(
-                label: 'Down (Mbps)',
+                label: l10n.fieldDownMbps,
                 value: _draft.hysteriaDownMbps,
                 onChanged: (v) => setState(
                     () => _draft = _draft.copyWith(hysteriaDownMbps: v)),

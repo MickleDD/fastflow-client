@@ -43,7 +43,17 @@ class AppSettings {
   /// Debug/advanced: expose the Clash control API. When on, it binds
   /// 127.0.0.1 on an ephemeral port with a fresh per-session secret — there is
   /// no unauthenticated or fixed-port variant.
+  ///
+  /// Not exposed in the consumer UI (it is a developer diagnostic); it defaults
+  /// to off and stays off unless flipped in storage/tests. It is unrelated to
+  /// the traffic meter, which reads the in-process stats service over FFI.
   final bool debugApiEnabled;
+
+  // ---- Presentation -------------------------------------------------------
+  /// Language subtag selecting the app UI language ("en", "ru", …). Empty means
+  /// "follow the operating-system locale". Persisted so the choice survives a
+  /// restart; consumed by `localeProvider` and bound to `MaterialApp.locale`.
+  final String localeTag;
 
   const AppSettings({
     this.tunMode = TunMode.mixed,
@@ -55,6 +65,7 @@ class AppSettings {
     this.windowsNoAdminFallback = true,
     this.enableStats = true,
     this.debugApiEnabled = false,
+    this.localeTag = '',
   });
 
   const AppSettings.defaults() : this();
@@ -69,6 +80,7 @@ class AppSettings {
     bool? windowsNoAdminFallback,
     bool? enableStats,
     bool? debugApiEnabled,
+    String? localeTag,
   }) {
     return AppSettings(
       tunMode: tunMode ?? this.tunMode,
@@ -82,6 +94,7 @@ class AppSettings {
           windowsNoAdminFallback ?? this.windowsNoAdminFallback,
       enableStats: enableStats ?? this.enableStats,
       debugApiEnabled: debugApiEnabled ?? this.debugApiEnabled,
+      localeTag: localeTag ?? this.localeTag,
     );
   }
 
@@ -95,6 +108,7 @@ class AppSettings {
         'windowsNoAdminFallback': windowsNoAdminFallback,
         'enableStats': enableStats,
         'debugApiEnabled': debugApiEnabled,
+        'localeTag': localeTag,
       };
 
   factory AppSettings.fromJson(Map<String, dynamic> j) => AppSettings(
@@ -115,6 +129,7 @@ class AppSettings {
         windowsNoAdminFallback: j['windowsNoAdminFallback'] as bool? ?? true,
         enableStats: j['enableStats'] as bool? ?? true,
         debugApiEnabled: j['debugApiEnabled'] as bool? ?? false,
+        localeTag: j['localeTag'] as String? ?? '',
       );
 
   /// Fail-secure migration from the pre-hardening schema. Users who had LAN

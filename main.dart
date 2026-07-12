@@ -6,8 +6,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:fastflow_vpn/l10n/app_localizations.dart';
 
+import 'presentation/state/locale_mgr.dart';
 import 'presentation/state/providers.dart';
 import 'presentation/ui_android/main_activity_layout.dart';
+import 'presentation/ui_shared/components/update_flow.dart';
 import 'presentation/ui_windows/main_window_layout.dart';
 
 // NOTE: this project keeps its Clean-Architecture packages at the repo root
@@ -19,17 +21,21 @@ void main() {
   runApp(const ProviderScope(child: FastFlowApp()));
 }
 
-class FastFlowApp extends StatelessWidget {
+class FastFlowApp extends ConsumerWidget {
   const FastFlowApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final seed = Colors.indigo;
+    // `null` (the "System" choice) lets Flutter resolve the OS locale against
+    // supportedLocales; a concrete Locale forces the user's chosen language.
+    final locale = ref.watch(localeProvider);
     return MaterialApp(
       // `onGenerateTitle` (not `title`) so the OS-level app title is localized:
       // it runs with a context that sits under the localization delegates.
       onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
       debugShowCheckedModeBanner: false,
+      locale: locale,
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -48,10 +54,13 @@ class FastFlowApp extends StatelessWidget {
         brightness: Brightness.dark,
       ),
       // Windows/desktop gets the rail layout; Android (and other mobile) the
-      // bottom-nav layout.
-      home: Platform.isWindows
-          ? const MainWindowLayout()
-          : const MainActivityLayout(),
+      // bottom-nav layout. UpdateGate fires the once-per-launch release check
+      // without blocking first paint.
+      home: UpdateGate(
+        child: Platform.isWindows
+            ? const MainWindowLayout()
+            : const MainActivityLayout(),
+      ),
     );
   }
 }

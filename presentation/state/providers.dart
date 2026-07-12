@@ -21,6 +21,7 @@ import '../../infrastructure/network/wifi_monitor_android.dart';
 import '../../infrastructure/network/wifi_monitor_windows.dart';
 import '../../infrastructure/os_android/android_vpn_service.dart';
 import '../../infrastructure/os_windows/windows_vpn_platform.dart';
+import '../../infrastructure/updates/github_updater_service.dart';
 
 /// Dependency-injection graph. Everything downstream is wired from these
 /// providers so the widget tree only depends on abstractions.
@@ -46,6 +47,12 @@ final vpnPlatformProvider = Provider<IVpnPlatform>((_) {
   if (Platform.isAndroid) return AndroidVpnPlatform();
   if (Platform.isWindows) return WindowsVpnPlatform();
   throw UnsupportedError('Unsupported platform for VPN');
+});
+
+final updaterServiceProvider = Provider<GithubUpdaterService>((ref) {
+  final service = GithubUpdaterService();
+  ref.onDispose(service.dispose);
+  return service;
 });
 
 final wifiMonitorProvider = Provider<IWifiMonitor>((ref) {

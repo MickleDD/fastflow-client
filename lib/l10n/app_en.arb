@@ -18,7 +18,12 @@
 
   "newProfile": "New profile",
   "@newProfile": {
-    "description": "Tooltip on the '+' button that opens the profile editor to create a new proxy profile."
+    "description": "Tooltip on the '+' button that opens the profile editor to create a new proxy profile; also the editor's title in create mode."
+  },
+
+  "editProfile": "Edit profile",
+  "@editProfile": {
+    "description": "Profile editor app-bar title when editing an existing profile."
   },
 
   "connect": "Connect",
@@ -61,6 +66,16 @@
     "description": "Title of the TUN / OS-integration tab in Settings."
   },
 
+  "settingsLanguage": "Language",
+  "@settingsLanguage": {
+    "description": "Label for the app language selector in the global settings header."
+  },
+
+  "languageSystem": "System",
+  "@languageSystem": {
+    "description": "Language-selector option that follows the operating-system locale."
+  },
+
   "killSwitch": "Kill switch",
   "@killSwitch": {
     "description": "Title of the setting that blocks all non-VPN traffic when the tunnel drops."
@@ -69,5 +84,266 @@
   "tunMode": "TUN mode",
   "@tunMode": {
     "description": "Title of the setting that selects the TUN stack implementation."
+  },
+
+  "importFromClipboard": "Import from Clipboard",
+  "@importFromClipboard": {
+    "description": "Button in the profile editor that fills the form from a vless:// link on the clipboard."
+  },
+
+  "clipboardEmpty": "Clipboard is empty",
+  "@clipboardEmpty": {
+    "description": "Snackbar shown when the user taps import but the clipboard has no text."
+  },
+
+  "clipboardNoVlessLink": "No valid vless:// link on the clipboard",
+  "@clipboardNoVlessLink": {
+    "description": "Snackbar shown when the clipboard text is not a parseable vless:// share link."
+  },
+
+  "importedFromClipboard": "Imported from clipboard",
+  "@importedFromClipboard": {
+    "description": "Snackbar confirming the form was filled from a clipboard vless:// link."
+  },
+
+  "unnamedProfile": "Unnamed",
+  "@unnamedProfile": {
+    "description": "Fallback profile name used when the user saves a profile with an empty name."
+  },
+
+  "fieldName": "Name",
+  "@fieldName": {
+    "description": "Text-field label: the profile's display name."
+  },
+
+  "fieldServerAddress": "Server address",
+  "@fieldServerAddress": {
+    "description": "Text-field label: the proxy server host / address."
+  },
+
+  "fieldPort": "Port",
+  "@fieldPort": {
+    "description": "Text-field label: the proxy server port."
+  },
+
+  "fieldUuid": "UUID",
+  "@fieldUuid": {
+    "description": "Text-field label: the VLESS user id (UUID). Acronym — usually untranslated."
+  },
+
+  "fieldPassword": "Password",
+  "@fieldPassword": {
+    "description": "Text-field label: the Hysteria2 auth password."
+  },
+
+  "fieldProtocol": "Protocol",
+  "@fieldProtocol": {
+    "description": "Dropdown label: the outbound wire protocol (VLESS / Hysteria2)."
+  },
+
+  "advancedSettings": "Advanced Settings",
+  "@advancedSettings": {
+    "description": "Title of the collapsed section holding power-user knobs in the profile editor."
+  },
+
+  "advancedSettingsSubtitle": "Transport, MUX, TLS tricks — optional",
+  "@advancedSettingsSubtitle": {
+    "description": "Subtitle under the Advanced Settings section header."
+  },
+
+  "sectionTls": "TLS",
+  "@sectionTls": {
+    "description": "Header for the TLS block inside Advanced Settings. Acronym — usually untranslated."
+  },
+
+  "fieldFlow": "Flow",
+  "@fieldFlow": {
+    "description": "Dropdown label: XTLS flow control for VLESS."
+  },
+
+  "fieldTransport": "Transport",
+  "@fieldTransport": {
+    "description": "Dropdown label: the stream transport (tcp / ws / grpc / …)."
+  },
+
+  "fieldPath": "Path",
+  "@fieldPath": {
+    "description": "Text-field label: ws/http/httpupgrade request path."
+  },
+
+  "fieldHostHeader": "Host header",
+  "@fieldHostHeader": {
+    "description": "Text-field label: HTTP Host header for ws/http transports."
+  },
+
+  "fieldGrpcServiceName": "gRPC service name",
+  "@fieldGrpcServiceName": {
+    "description": "Text-field label: the gRPC transport service name."
+  },
+
+  "muxTitle": "Multiplex (MUX)",
+  "@muxTitle": {
+    "description": "Switch label: enable connection multiplexing."
+  },
+
+  "muxSubtitle": "Disabled automatically with Vision flow",
+  "@muxSubtitle": {
+    "description": "Subtitle explaining MUX is incompatible with XTLS Vision flow."
+  },
+
+  "muxProtocol": "MUX protocol",
+  "@muxProtocol": {
+    "description": "Dropdown label: which multiplexing protocol to use (h2mux / smux / yamux)."
+  },
+
+  "fieldObfsPassword": "Obfs (salamander) password — empty to disable",
+  "@fieldObfsPassword": {
+    "description": "Text-field label: Hysteria2 salamander obfuscation password; empty disables it."
+  },
+
+  "fieldUpMbps": "Up (Mbps)",
+  "@fieldUpMbps": {
+    "description": "Text-field label: Hysteria2 upload bandwidth hint in Mbps."
+  },
+
+  "fieldDownMbps": "Down (Mbps)",
+  "@fieldDownMbps": {
+    "description": "Text-field label: Hysteria2 download bandwidth hint in Mbps."
+  },
+
+  "tlsEnable": "Enable TLS",
+  "@tlsEnable": {
+    "description": "Switch label: turn the TLS layer on for this profile."
+  },
+
+  "tlsSni": "SNI / server name",
+  "@tlsSni": {
+    "description": "Text-field label: TLS server_name / SNI."
+  },
+
+  "tlsSniHint": "reuse server address if empty",
+  "@tlsSniHint": {
+    "description": "Hint under the SNI field: an empty value reuses the server address."
+  },
+
+  "tlsFingerprint": "uTLS fingerprint",
+  "@tlsFingerprint": {
+    "description": "Text-field label: the uTLS ClientHello fingerprint to mimic."
+  },
+
+  "tlsFingerprintHint": "chrome, firefox, safari, randomized…",
+  "@tlsFingerprintHint": {
+    "description": "Hint listing example uTLS fingerprint values."
+  },
+
+  "tlsSkipCertVerify": "Skip certificate verification",
+  "@tlsSkipCertVerify": {
+    "description": "Switch label: allow insecure TLS (do not verify the server certificate)."
+  },
+
+  "tlsReality": "Reality",
+  "@tlsReality": {
+    "description": "Switch label: use the Reality TLS variant. Proper noun — usually untranslated."
+  },
+
+  "tlsRealityPublicKey": "Reality public key",
+  "@tlsRealityPublicKey": {
+    "description": "Text-field label: the Reality public key handed out by the server."
+  },
+
+  "tlsRealityShortId": "Reality short id",
+  "@tlsRealityShortId": {
+    "description": "Text-field label: the Reality short id handed out by the server."
+  },
+
+  "tlsTricks": "TLS Tricks",
+  "@tlsTricks": {
+    "description": "Header for the DPI-evasion TLS tricks block."
+  },
+
+  "tlsMixedCaseSni": "Mixed-case SNI",
+  "@tlsMixedCaseSni": {
+    "description": "Switch label: randomise the letter case of the SNI hostname."
+  },
+
+  "tlsMixedCaseSniSubtitle": "Randomise SNI letter case to evade blocklists",
+  "@tlsMixedCaseSniSubtitle": {
+    "description": "Subtitle explaining the mixed-case SNI trick."
+  },
+
+  "tlsFragmentation": "Fragmentation",
+  "@tlsFragmentation": {
+    "description": "Switch label: enable TLS ClientHello fragmentation."
+  },
+
+  "tlsFragmentationSubtitle": "Split the ClientHello across TCP segments",
+  "@tlsFragmentationSubtitle": {
+    "description": "Subtitle explaining the fragmentation trick."
+  },
+
+  "tlsFragmentSize": "Fragment size",
+  "@tlsFragmentSize": {
+    "description": "Text-field label: fragment size range (bytes)."
+  },
+
+  "tlsFragmentDelay": "Fragment delay (ms)",
+  "@tlsFragmentDelay": {
+    "description": "Text-field label: delay between fragments, in milliseconds."
+  },
+
+  "tlsPadding": "Padding",
+  "@tlsPadding": {
+    "description": "Switch label: enable TLS ClientHello padding."
+  },
+
+  "tlsPaddingSubtitle": "Pad the ClientHello to a randomised length",
+  "@tlsPaddingSubtitle": {
+    "description": "Subtitle explaining the padding trick."
+  },
+
+  "tlsPaddingSize": "Padding size",
+  "@tlsPaddingSize": {
+    "description": "Text-field label: padding size range."
+  },
+
+  "updateAvailableTitle": "Update Available",
+  "@updateAvailableTitle": {
+    "description": "Title of the dialog shown when a newer GitHub release exists."
+  },
+
+  "updateAvailableBody": "A new version of FastFlow is out! (v{version})",
+  "@updateAvailableBody": {
+    "description": "Body of the update dialog; {version} is the latest release version, e.g. 1.0.1.",
+    "placeholders": {
+      "version": {
+        "type": "String",
+        "example": "1.0.1"
+      }
+    }
+  },
+
+  "updateNow": "Update Now",
+  "@updateNow": {
+    "description": "Update-dialog action that opens the GitHub release page in the browser."
+  },
+
+  "updateLater": "Later",
+  "@updateLater": {
+    "description": "Update-dialog action that dismisses the dialog without updating."
+  },
+
+  "checkForUpdates": "Check for updates",
+  "@checkForUpdates": {
+    "description": "Settings list-tile that manually queries GitHub for a newer release."
+  },
+
+  "upToDate": "You are using the latest version",
+  "@upToDate": {
+    "description": "Snackbar shown after a manual update check when no newer release exists."
+  },
+
+  "updateCheckFailed": "Could not check for updates",
+  "@updateCheckFailed": {
+    "description": "Snackbar shown when the manual update check fails (offline, rate-limited, …)."
   }
 }

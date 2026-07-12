@@ -171,6 +171,11 @@ func (e *engine) start(configJson string) (err error) {
 	empty := ""
 	e.lastError.Store(&empty)
 	e.setStatus(statusRunning)
+
+	// Begin sampling the in-process v2ray stats into e.traffic. Uses the same
+	// ctx we handed box.New (carries the service registry; cancelled on stop),
+	// so the poller shuts down automatically via forceCleanupLocked -> cancel().
+	e.startTrafficPoller(ctx)
 	return nil
 }
 

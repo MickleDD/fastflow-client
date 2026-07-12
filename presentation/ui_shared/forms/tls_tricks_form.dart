@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:fastflow_vpn/l10n/app_localizations.dart';
+
 import '../../../core/domain/models/tls_config.dart';
 
 /// Controlled editor for a profile's TLS layer, focused on the DPI-evasion
@@ -13,33 +15,34 @@ class TlsTricksForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SwitchListTile(
-          title: const Text('Enable TLS'),
+          title: Text(l10n.tlsEnable),
           value: value.enabled,
           onChanged: (v) => onChanged(value.copyWith(enabled: v)),
         ),
         if (value.enabled) ...[
           TextFormField(
             initialValue: value.sni,
-            decoration: const InputDecoration(
-              labelText: 'SNI / server name',
-              hintText: 'reuse server address if empty',
+            decoration: InputDecoration(
+              labelText: l10n.tlsSni,
+              hintText: l10n.tlsSniHint,
             ),
             onChanged: (v) => onChanged(value.copyWith(sni: v)),
           ),
           TextFormField(
             initialValue: value.utlsFingerprint,
-            decoration: const InputDecoration(
-              labelText: 'uTLS fingerprint',
-              hintText: 'chrome, firefox, safari, randomized…',
+            decoration: InputDecoration(
+              labelText: l10n.tlsFingerprint,
+              hintText: l10n.tlsFingerprintHint,
             ),
             onChanged: (v) => onChanged(value.copyWith(utlsFingerprint: v)),
           ),
           SwitchListTile(
-            title: const Text('Skip certificate verification'),
+            title: Text(l10n.tlsSkipCertVerify),
             value: value.allowInsecure,
             onChanged: (v) => onChanged(value.copyWith(allowInsecure: v)),
           ),
@@ -47,7 +50,7 @@ class TlsTricksForm extends StatelessWidget {
 
           // ---- Reality ------------------------------------------------------
           SwitchListTile(
-            title: const Text('Reality'),
+            title: Text(l10n.tlsReality),
             value: value.reality.enabled,
             onChanged: (v) => onChanged(
               value.copyWith(reality: value.reality.copyWith(enabled: v)),
@@ -56,14 +59,14 @@ class TlsTricksForm extends StatelessWidget {
           if (value.reality.enabled) ...[
             TextFormField(
               initialValue: value.reality.publicKey,
-              decoration: const InputDecoration(labelText: 'Reality public key'),
+              decoration: InputDecoration(labelText: l10n.tlsRealityPublicKey),
               onChanged: (v) => onChanged(
                 value.copyWith(reality: value.reality.copyWith(publicKey: v)),
               ),
             ),
             TextFormField(
               initialValue: value.reality.shortId,
-              decoration: const InputDecoration(labelText: 'Reality short id'),
+              decoration: InputDecoration(labelText: l10n.tlsRealityShortId),
               onChanged: (v) => onChanged(
                 value.copyWith(reality: value.reality.copyWith(shortId: v)),
               ),
@@ -72,17 +75,17 @@ class TlsTricksForm extends StatelessWidget {
           const Divider(),
 
           // ---- TLS tricks ---------------------------------------------------
-          Text('TLS Tricks', style: Theme.of(context).textTheme.titleSmall),
+          Text(l10n.tlsTricks, style: Theme.of(context).textTheme.titleSmall),
           SwitchListTile(
-            title: const Text('Mixed-case SNI'),
-            subtitle: const Text('Randomise SNI letter case to evade blocklists'),
+            title: Text(l10n.tlsMixedCaseSni),
+            subtitle: Text(l10n.tlsMixedCaseSniSubtitle),
             value: value.mixedCaseSni,
             onChanged: (v) => onChanged(value.copyWith(mixedCaseSni: v)),
           ),
 
           SwitchListTile(
-            title: const Text('Fragmentation'),
-            subtitle: const Text('Split the ClientHello across TCP segments'),
+            title: Text(l10n.tlsFragmentation),
+            subtitle: Text(l10n.tlsFragmentationSubtitle),
             value: value.fragment.enabled,
             onChanged: (v) => onChanged(
               value.copyWith(fragment: value.fragment.copyWith(enabled: v)),
@@ -94,8 +97,8 @@ class TlsTricksForm extends StatelessWidget {
                 Expanded(
                   child: TextFormField(
                     initialValue: value.fragment.size,
-                    decoration: const InputDecoration(
-                      labelText: 'Fragment size',
+                    decoration: InputDecoration(
+                      labelText: l10n.tlsFragmentSize,
                       hintText: '10-100',
                     ),
                     onChanged: (v) => onChanged(
@@ -108,8 +111,8 @@ class TlsTricksForm extends StatelessWidget {
                 Expanded(
                   child: TextFormField(
                     initialValue: value.fragment.delay,
-                    decoration: const InputDecoration(
-                      labelText: 'Fragment delay (ms)',
+                    decoration: InputDecoration(
+                      labelText: l10n.tlsFragmentDelay,
                       hintText: '10-20',
                     ),
                     onChanged: (v) => onChanged(
@@ -122,8 +125,8 @@ class TlsTricksForm extends StatelessWidget {
             ),
 
           SwitchListTile(
-            title: const Text('Padding'),
-            subtitle: const Text('Pad the ClientHello to a randomised length'),
+            title: Text(l10n.tlsPadding),
+            subtitle: Text(l10n.tlsPaddingSubtitle),
             value: value.padding.enabled,
             onChanged: (v) => onChanged(
               value.copyWith(padding: value.padding.copyWith(enabled: v)),
@@ -132,8 +135,8 @@ class TlsTricksForm extends StatelessWidget {
           if (value.padding.enabled)
             TextFormField(
               initialValue: value.padding.size,
-              decoration: const InputDecoration(
-                labelText: 'Padding size',
+              decoration: InputDecoration(
+                labelText: l10n.tlsPaddingSize,
                 hintText: '100-200',
               ),
               onChanged: (v) => onChanged(
