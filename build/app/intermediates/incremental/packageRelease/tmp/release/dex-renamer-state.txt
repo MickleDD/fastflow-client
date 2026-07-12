@@ -1,4 +1,0 @@
-#Sun Jul 12 23:57:15 EEST 2026
-base.0=/app/build/app/intermediates/dex/release/minifyReleaseWithR8/classes.dex
-renamed.0=classes.dex
-path.0=classes.dex
