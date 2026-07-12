@@ -1,0 +1,48 @@
+# ---------------------------------------------------
+# Flutter / Dart
+# ---------------------------------------------------
+.dart_tool/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/coverage/
+*.lcov
+*.dill
+
+# ---------------------------------------------------
+# Android (Java/Kotlin/NDK)
+# ---------------------------------------------------
+android/.gradle/
+android/build/
+android/app/build/
+android/app/.cxx/
+android/local.properties
+*.keystore
+*.jks
+
+# ---------------------------------------------------
+# Go (VPN Engine & Windows Daemon)
+# ---------------------------------------------------
+# Игнорируем скомпилированные бинарники (они собираются локально через make)
+*.exe
+windows_daemon/fastflow-daemon.exe
+android/app/src/main/jniLibs/**/*.so
+
+# ---------------------------------------------------
+# Environment & AI Agents
+# ---------------------------------------------------
+.env
+.env.*
+!.env.example
+.claude/
+
+# ---------------------------------------------------
+# IDEs & OS Files
+# ---------------------------------------------------
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
