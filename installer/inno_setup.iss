@@ -18,7 +18,7 @@
 ; ============================================================================
 
 #define MyAppName        "FastFlow VPN"
-#define MyAppVersion     "0.1.0"
+#define MyAppVersion     "1.0.4"
 #define MyAppPublisher   "FastFlow"
 #define MyAppExeName     "fastflow_vpn.exe"
 #define DaemonExeName    "fastflow-daemon.exe"
