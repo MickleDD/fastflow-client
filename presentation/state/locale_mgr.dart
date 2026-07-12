@@ -12,11 +12,16 @@ import 'settings_mgr.dart';
 enum AppLanguage {
   system('', 'System'),
   english('en', 'English'),
-  russian('ru', 'Русский');
+  russian('ru', 'Русский'),
+  spanish('es', 'Español'),
+  portuguese('pt', 'Português'),
+  chineseSimplified('zh', '简体中文'),
+  chineseTraditional('zh_Hant', '繁體中文');
 
   const AppLanguage(this.tag, this.endonym);
 
-  /// Persisted language subtag; empty for [AppLanguage.system].
+  /// Persisted language subtag; empty for [AppLanguage.system]. A `language_Script`
+  /// form (e.g. `zh_Hant`) encodes a script subtag — see [locale].
   final String tag;
 
   /// The language's own name, rendered verbatim regardless of the active locale.
@@ -27,8 +32,18 @@ enum AppLanguage {
   static AppLanguage fromTag(String tag) =>
       values.firstWhere((l) => l.tag == tag, orElse: () => AppLanguage.system);
 
-  /// `null` for [system] (MaterialApp then follows the OS locale).
-  Locale? get locale => tag.isEmpty ? null : Locale(tag);
+  /// `null` for [system] (MaterialApp then follows the OS locale). A `_`-separated
+  /// tag becomes a language + script Locale so entries like `zh_Hant` resolve to
+  /// `Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant')` — the exact
+  /// shape `flutter gen-l10n` emits into `supportedLocales`. Building `Locale(tag)`
+  /// instead would make `zh_Hant` its own bogus languageCode and never match.
+  Locale? get locale {
+    if (tag.isEmpty) return null;
+    final parts = tag.split('_');
+    return parts.length == 1
+        ? Locale(parts.first)
+        : Locale.fromSubtags(languageCode: parts.first, scriptCode: parts[1]);
+  }
 }
 
 /// The app's active [Locale] — the read side of the language state manager.

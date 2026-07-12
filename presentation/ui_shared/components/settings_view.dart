@@ -100,9 +100,11 @@ class _CheckForUpdatesTileState extends ConsumerState<_CheckForUpdatesTile> {
   }
 }
 
-/// App-wide language switcher: System / English / Русский. The write goes
-/// through [setAppLanguage], which persists the choice via the settings
-/// pipeline; `MaterialApp` rebuilds into the new locale as soon as it lands.
+/// App-wide language switcher. Options are driven entirely by [AppLanguage.values]
+/// (System + every supported UI language), so adding a language is a one-line enum
+/// edit — no change here. The write goes through [setAppLanguage], which persists
+/// the choice via the settings pipeline; `MaterialApp` rebuilds into the new locale
+/// as soon as it lands.
 class _LanguageSelector extends ConsumerWidget {
   const _LanguageSelector();
 

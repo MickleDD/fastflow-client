@@ -88,9 +88,24 @@ func (p *androidPlatform) OpenTun(options *tun.Options, _ option.TunPlatformOpti
 	return tun.New(*options)
 }
 
-// The core uses its own interface monitor / getter on Android; we defer to it.
-func (p *androidPlatform) UsePlatformDefaultInterfaceMonitor() bool { return true }
-func (p *androidPlatform) UsePlatformInterfaceGetter() bool         { return true }
+// The core builds and owns its own interface monitor / getter on Android. We
+// still provide the "protect" control (AutoDetectInterfaceControl ->
+// VpnService.protect) and OpenTun over the VpnService fd, but we do NOT claim to
+// supply a platform monitor or interface getter.
+//
+// These MUST return false while CreateDefaultInterfaceMonitor below returns nil:
+// returning true tells route.NewNetworkManager to take the platform-provided
+// monitor, which is nil here, and the core then dereferences it during init ->
+// fatal nil pointer panic. Returning false lets the core construct its own
+// (netlink) monitor. The proper long-term fix is a real ConnectivityManager-
+// backed monitor over JNI; until then the core's self-managed monitor keeps TUN
+// working without the crash.
+func (p *androidPlatform) UsePlatformDefaultInterfaceMonitor() bool { return false }
+func (p *androidPlatform) UsePlatformInterfaceGetter() bool         { return false }
+
+// CreateDefaultInterfaceMonitor is unused while UsePlatformDefaultInterfaceMonitor
+// returns false (the core creates its own). Kept to satisfy platform.Interface;
+// a future JNI-backed monitor would be returned here and the flag flipped to true.
 func (p *androidPlatform) CreateDefaultInterfaceMonitor(logger.Logger) tun.DefaultInterfaceMonitor {
 	return nil
 }
