@@ -5,6 +5,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
+import android.net.Network
 import android.net.VpnService
 import android.os.Build
 import android.os.ParcelFileDescriptor
@@ -13,9 +14,15 @@ import android.os.ParcelFileDescriptor
  * The tunnel-owning VpnService. It runs in the app process, so the Go engine
  * (driven from Dart via FFI) shares the fd this service produces.
  *
- * Socket "protect" substitute: the builder adds our own package to the
- * disallowed list, so the in-process engine's upstream sockets bypass the tunnel
- * and cannot loop — no Go→JNI protect bridge required.
+ * Socket protection is belt-and-braces: the builder adds our own package to the
+ * disallowed list (routing-level bypass), and once the Go engine registers its
+ * platform hooks (NetifRegisterPlatform), per-socket VpnService.protect() also
+ * flows up through NativeBridge.protectSocket.
+ *
+ * While the service is active, [NativeBridge] runs a [NetworkStateMonitor] that
+ * streams underlying-network state down to the Go engine — the platform
+ * replacement for the netlink monitor that sing-box's route.NewNetworkManager
+ * cannot use inside the VpnService sandbox.
  */
 class FastFlowVpnService : VpnService() {
 
@@ -47,6 +54,7 @@ class FastFlowVpnService : VpnService() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent?.action == ACTION_STOP) {
+            NativeBridge.stopMonitor()
             stopTunnel()
             stopForeground(STOP_FOREGROUND_REMOVE)
             stopSelf()
@@ -54,6 +62,10 @@ class FastFlowVpnService : VpnService() {
         }
 
         startForegroundInternal()
+        // Feed the Go engine's platform interface monitor for the lifetime of
+        // the tunnel. Started before establish() so the engine already has the
+        // current network state by the time Dart calls StartEngine.
+        NativeBridge.startMonitor(this)
         val fd = if (intent != null) establish(intent) else -1
         pendingEstablish?.invoke(fd)
         pendingEstablish = null
@@ -112,7 +124,17 @@ class FastFlowVpnService : VpnService() {
 
     fun refreshUnderlyingNetworks() {
         // Reset so the tunnel follows the new default network after roaming.
-        setUnderlyingNetworks(null)
+        runCatching { setUnderlyingNetworks(null) }
+    }
+
+    /**
+     * Called by [NativeBridge] whenever the monitor's default (underlying)
+     * network changes: pins the OS's view of what carries the tunnel, fixing
+     * power/data accounting and captive-portal probing after a Wi-Fi <->
+     * cellular handover. Null lets the system decide again.
+     */
+    fun updateUnderlyingNetworks(network: Network?) {
+        runCatching { setUnderlyingNetworks(network?.let { arrayOf(it) }) }
     }
 
     private fun splitCidr(cidr: String): Pair<String, Int>? {
@@ -163,6 +185,7 @@ class FastFlowVpnService : VpnService() {
 
     override fun onRevoke() {
         // System or another VPN app revoked us.
+        NativeBridge.stopMonitor()
         stopTunnel()
         stopForeground(STOP_FOREGROUND_REMOVE)
         stopSelf()
@@ -170,6 +193,7 @@ class FastFlowVpnService : VpnService() {
     }
 
     override fun onDestroy() {
+        NativeBridge.stopMonitor()
         stopTunnel()
         instance = null
         super.onDestroy()

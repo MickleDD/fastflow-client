@@ -50,10 +50,27 @@ android {
         }
     }
 
+    // Pin to the locally installed NDK so the first native build doesn't
+    // stall on AGP's default-NDK auto-download. r28+ also emits 16 KB
+    // page-aligned .so files by default.
+    ndkVersion "29.0.14206865"
+
+    // C++ JNI shim (libfastflow_jni.so): forwards ConnectivityManager network
+    // state from Kotlin into the Go engine and Go "protect" requests back up.
+    // The C ABI shared with the engine lives in data/vpn_engine/netif_bridge.h.
+    externalNativeBuild {
+        cmake {
+            path file("src/main/cpp/CMakeLists.txt")
+        }
+    }
+
     buildTypes {
         release {
             // TODO: replace with a real release signing config before publishing.
             signingConfig = signingConfigs.debug
+            // Only applied when minification is enabled; keeps the JNI seam
+            // (NativeBridge) from being renamed or stripped by R8.
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
     }
 }

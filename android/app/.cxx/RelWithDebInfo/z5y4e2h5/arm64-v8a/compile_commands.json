@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/app/android/app/.cxx/RelWithDebInfo/z5y4e2h5/arm64-v8a",
+  "command": "/opt/android-sdk/ndk/29.0.14206865/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=aarch64-none-linux-android24 --sysroot=/opt/android-sdk/ndk/29.0.14206865/toolchains/llvm/prebuilt/linux-x86_64/sysroot -Dfastflow_jni_EXPORTS -I/app/data/vpn_engine -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -O2 -g -DNDEBUG -fPIC -Wall -Wextra -fvisibility=hidden -fno-exceptions -fno-rtti -o CMakeFiles/fastflow_jni.dir/fastflow_jni.cpp.o -c /app/android/app/src/main/cpp/fastflow_jni.cpp",
+  "file": "/app/android/app/src/main/cpp/fastflow_jni.cpp"
+}
+]

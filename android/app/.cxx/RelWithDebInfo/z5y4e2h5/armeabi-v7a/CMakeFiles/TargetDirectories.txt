@@ -1,0 +1,3 @@
+/app/android/app/.cxx/RelWithDebInfo/z5y4e2h5/armeabi-v7a/CMakeFiles/fastflow_jni.dir
+/app/android/app/.cxx/RelWithDebInfo/z5y4e2h5/armeabi-v7a/CMakeFiles/edit_cache.dir
+/app/android/app/.cxx/RelWithDebInfo/z5y4e2h5/armeabi-v7a/CMakeFiles/rebuild_cache.dir

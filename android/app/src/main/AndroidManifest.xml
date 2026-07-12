@@ -3,6 +3,10 @@
     <!-- Core networking -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <!-- ConnectivityManager.requestNetwork on API < 31: default-network
+         tracking for the Go engine's platform interface monitor
+         (NetworkStateMonitor). Normal, install-time permission. -->
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <!-- Required to read the current SSID / Wi-Fi security type (auto-connect
          on insecure Wi-Fi). Must also be granted at runtime on Android 6+. -->

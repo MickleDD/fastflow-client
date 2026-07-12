@@ -1,0 +1,4 @@
+/usr/bin/ninja \
+  -C \
+  /app/android/app/.cxx/RelWithDebInfo/z5y4e2h5/armeabi-v7a \
+  fastflow_jni

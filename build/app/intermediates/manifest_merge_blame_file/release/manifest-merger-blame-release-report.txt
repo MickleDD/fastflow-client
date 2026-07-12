@@ -1,0 +1,271 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.fastflow.vpn"
+4    android:versionCode="1"
+5    android:versionName="1.0.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="24"
+9        android:targetSdkVersion="34" />
+10
+11    <!-- Core networking -->
+12    <uses-permission android:name="android.permission.INTERNET" />
+12-->/app/android/app/src/main/AndroidManifest.xml:4:5-66
+12-->/app/android/app/src/main/AndroidManifest.xml:4:22-64
+13    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+13-->/app/android/app/src/main/AndroidManifest.xml:5:5-78
+13-->/app/android/app/src/main/AndroidManifest.xml:5:22-76
+14    <!--
+15         ConnectivityManager.requestNetwork on API < 31: default-network
+16         tracking for the Go engine's platform interface monitor
+17         (NetworkStateMonitor). Normal, install-time permission.
+18    -->
+19    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+19-->/app/android/app/src/main/AndroidManifest.xml:9:5-78
+19-->/app/android/app/src/main/AndroidManifest.xml:9:22-76
+20    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+20-->/app/android/app/src/main/AndroidManifest.xml:10:5-75
+20-->/app/android/app/src/main/AndroidManifest.xml:10:22-73
+21    <!--
+22         Required to read the current SSID / Wi-Fi security type (auto-connect
+23         on insecure Wi-Fi). Must also be granted at runtime on Android 6+.
+24    -->
+25    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+25-->/app/android/app/src/main/AndroidManifest.xml:13:5-78
+25-->/app/android/app/src/main/AndroidManifest.xml:13:22-76
+26
+27    <!-- Foreground service for the VpnService notification -->
+28    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+28-->/app/android/app/src/main/AndroidManifest.xml:16:5-76
+28-->/app/android/app/src/main/AndroidManifest.xml:16:22-74
+29    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+29-->/app/android/app/src/main/AndroidManifest.xml:17:5-88
+29-->/app/android/app/src/main/AndroidManifest.xml:17:22-86
+30    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+30-->/app/android/app/src/main/AndroidManifest.xml:18:5-76
+30-->/app/android/app/src/main/AndroidManifest.xml:18:22-74
+31
+32    <!-- Allows re-arming an always-on tunnel after reboot (system-managed) -->
+33    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+33-->/app/android/app/src/main/AndroidManifest.xml:21:5-80
+33-->/app/android/app/src/main/AndroidManifest.xml:21:22-78
+34
+35    <permission
+35-->[androidx.core:core:1.13.1] /root/.gradle/caches/transforms-3/5214c11a44c12132164520d80b8a6f93/transformed/core-1.13.1/AndroidManifest.xml:22:5-24:47
+36        android:name="com.fastflow.vpn.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+36-->[androidx.core:core:1.13.1] /root/.gradle/caches/transforms-3/5214c11a44c12132164520d80b8a6f93/transformed/core-1.13.1/AndroidManifest.xml:23:9-81
+37        android:protectionLevel="signature" />
+37-->[androidx.core:core:1.13.1] /root/.gradle/caches/transforms-3/5214c11a44c12132164520d80b8a6f93/transformed/core-1.13.1/AndroidManifest.xml:24:9-44
+38
+39    <uses-permission android:name="com.fastflow.vpn.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+39-->[androidx.core:core:1.13.1] /root/.gradle/caches/transforms-3/5214c11a44c12132164520d80b8a6f93/transformed/core-1.13.1/AndroidManifest.xml:26:5-97
+39-->[androidx.core:core:1.13.1] /root/.gradle/caches/transforms-3/5214c11a44c12132164520d80b8a6f93/transformed/core-1.13.1/AndroidManifest.xml:26:22-94
+40
+41    <application
+42        android:name="android.app.Application"
+42-->/app/android/app/src/main/AndroidManifest.xml:25:9-42
+43        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+43-->[androidx.core:core:1.13.1] /root/.gradle/caches/transforms-3/5214c11a44c12132164520d80b8a6f93/transformed/core-1.13.1/AndroidManifest.xml:28:18-86
+44        android:enableOnBackInvokedCallback="true"
+44-->/app/android/app/src/main/AndroidManifest.xml:27:9-51
+45        android:extractNativeLibs="false"
+46        android:icon="@drawable/ic_launcher"
+46-->/app/android/app/src/main/AndroidManifest.xml:26:9-45
+47        android:label="FastFlow VPN" >
+47-->/app/android/app/src/main/AndroidManifest.xml:24:9-37
+48        <activity
+48-->/app/android/app/src/main/AndroidManifest.xml:29:9-44:20
+49            android:name="com.fastflow.vpn.MainActivity"
+49-->/app/android/app/src/main/AndroidManifest.xml:30:13-41
+50            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+50-->/app/android/app/src/main/AndroidManifest.xml:34:13-163
+51            android:exported="true"
+51-->/app/android/app/src/main/AndroidManifest.xml:31:13-36
+52            android:hardwareAccelerated="true"
+52-->/app/android/app/src/main/AndroidManifest.xml:35:13-47
+53            android:launchMode="singleTop"
+53-->/app/android/app/src/main/AndroidManifest.xml:32:13-43
+54            android:theme="@style/LaunchTheme"
+54-->/app/android/app/src/main/AndroidManifest.xml:33:13-47
+55            android:windowSoftInputMode="adjustResize" >
+55-->/app/android/app/src/main/AndroidManifest.xml:36:13-55
+56            <meta-data
+56-->/app/android/app/src/main/AndroidManifest.xml:37:13-39:56
+57                android:name="io.flutter.embedding.android.NormalTheme"
+57-->/app/android/app/src/main/AndroidManifest.xml:38:17-72
+58                android:resource="@style/NormalTheme" />
+58-->/app/android/app/src/main/AndroidManifest.xml:39:17-54
+59
+60            <intent-filter>
+60-->/app/android/app/src/main/AndroidManifest.xml:40:13-43:29
+61                <action android:name="android.intent.action.MAIN" />
+61-->/app/android/app/src/main/AndroidManifest.xml:41:17-68
+61-->/app/android/app/src/main/AndroidManifest.xml:41:25-66
+62
+63                <category android:name="android.intent.category.LAUNCHER" />
+63-->/app/android/app/src/main/AndroidManifest.xml:42:17-76
+63-->/app/android/app/src/main/AndroidManifest.xml:42:27-74
+64            </intent-filter>
+65        </activity>
+66
+67        <!--
+68             The VPN engine's tunnel service. BIND_VPN_SERVICE lets only the
+69             system bind it; the intent-filter registers it as a VPN provider.
+70        -->
+71        <service
+71-->/app/android/app/src/main/AndroidManifest.xml:48:9-59:19
+72            android:name="com.fastflow.vpn.FastFlowVpnService"
+72-->/app/android/app/src/main/AndroidManifest.xml:49:13-47
+73            android:exported="false"
+73-->/app/android/app/src/main/AndroidManifest.xml:52:13-37
+74            android:foregroundServiceType="specialUse"
+74-->/app/android/app/src/main/AndroidManifest.xml:51:13-55
+75            android:permission="android.permission.BIND_VPN_SERVICE" >
+75-->/app/android/app/src/main/AndroidManifest.xml:50:13-69
+76            <intent-filter>
+76-->/app/android/app/src/main/AndroidManifest.xml:53:13-55:29
+77                <action android:name="android.net.VpnService" />
+77-->/app/android/app/src/main/AndroidManifest.xml:54:17-64
+77-->/app/android/app/src/main/AndroidManifest.xml:54:25-62
+78            </intent-filter>
+79
+80            <property
+80-->/app/android/app/src/main/AndroidManifest.xml:56:13-58:66
+81                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+81-->/app/android/app/src/main/AndroidManifest.xml:57:17-76
+82                android:value="FastFlow VLESS/Hysteria2 tunnel" />
+82-->/app/android/app/src/main/AndroidManifest.xml:58:17-64
+83        </service>
+84
+85        <!-- Headless engine host that re-arms the tunnel after boot -->
+86        <service
+86-->/app/android/app/src/main/AndroidManifest.xml:62:9-69:19
+87            android:name="com.fastflow.vpn.AutoConnectService"
+87-->/app/android/app/src/main/AndroidManifest.xml:63:13-47
+88            android:exported="false"
+88-->/app/android/app/src/main/AndroidManifest.xml:65:13-37
+89            android:foregroundServiceType="specialUse" >
+89-->/app/android/app/src/main/AndroidManifest.xml:64:13-55
+90            <property
+90-->/app/android/app/src/main/AndroidManifest.xml:56:13-58:66
+91                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+91-->/app/android/app/src/main/AndroidManifest.xml:57:17-76
+92                android:value="FastFlow boot auto-connect" />
+92-->/app/android/app/src/main/AndroidManifest.xml:58:17-64
+93        </service>
+94
+95        <!-- Re-arm on boot / app update when Always-On or Auto-Connect is on -->
+96        <receiver
+96-->/app/android/app/src/main/AndroidManifest.xml:72:9-81:20
+97            android:name="com.fastflow.vpn.BootReceiver"
+97-->/app/android/app/src/main/AndroidManifest.xml:73:13-41
+98            android:enabled="true"
+98-->/app/android/app/src/main/AndroidManifest.xml:74:13-35
+99            android:exported="true" >
+99-->/app/android/app/src/main/AndroidManifest.xml:75:13-36
+100            <intent-filter>
+100-->/app/android/app/src/main/AndroidManifest.xml:76:13-80:29
+101                <action android:name="android.intent.action.BOOT_COMPLETED" />
+101-->/app/android/app/src/main/AndroidManifest.xml:77:17-78
+101-->/app/android/app/src/main/AndroidManifest.xml:77:25-76
+102                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+102-->/app/android/app/src/main/AndroidManifest.xml:78:17-85
+102-->/app/android/app/src/main/AndroidManifest.xml:78:25-83
+103                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+103-->/app/android/app/src/main/AndroidManifest.xml:79:17-83
+103-->/app/android/app/src/main/AndroidManifest.xml:79:25-81
+104            </intent-filter>
+105        </receiver>
+106
+107        <!-- Flutter v2 embedding marker -->
+108        <meta-data
+108-->/app/android/app/src/main/AndroidManifest.xml:84:9-86:32
+109            android:name="flutterEmbedding"
+109-->/app/android/app/src/main/AndroidManifest.xml:85:13-44
+110            android:value="2" />
+110-->/app/android/app/src/main/AndroidManifest.xml:86:13-30
+111
+112        <activity
+112-->[:url_launcher_android] /app/build/url_launcher_android/intermediates/merged_manifest/release/AndroidManifest.xml:8:9-11:74
+113            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
+113-->[:url_launcher_android] /app/build/url_launcher_android/intermediates/merged_manifest/release/AndroidManifest.xml:9:13-74
+114            android:exported="false"
+114-->[:url_launcher_android] /app/build/url_launcher_android/intermediates/merged_manifest/release/AndroidManifest.xml:10:13-37
+115            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+115-->[:url_launcher_android] /app/build/url_launcher_android/intermediates/merged_manifest/release/AndroidManifest.xml:11:13-71
+116
+117        <uses-library
+117-->[androidx.window:window:1.2.0] /root/.gradle/caches/transforms-3/01568f3724952e4a8f1e64fef6f1523a/transformed/jetified-window-1.2.0/AndroidManifest.xml:23:9-25:40
+118            android:name="androidx.window.extensions"
+118-->[androidx.window:window:1.2.0] /root/.gradle/caches/transforms-3/01568f3724952e4a8f1e64fef6f1523a/transformed/jetified-window-1.2.0/AndroidManifest.xml:24:13-54
+119            android:required="false" />
+119-->[androidx.window:window:1.2.0] /root/.gradle/caches/transforms-3/01568f3724952e4a8f1e64fef6f1523a/transformed/jetified-window-1.2.0/AndroidManifest.xml:25:13-37
+120        <uses-library
+120-->[androidx.window:window:1.2.0] /root/.gradle/caches/transforms-3/01568f3724952e4a8f1e64fef6f1523a/transformed/jetified-window-1.2.0/AndroidManifest.xml:26:9-28:40
+121            android:name="androidx.window.sidecar"
+121-->[androidx.window:window:1.2.0] /root/.gradle/caches/transforms-3/01568f3724952e4a8f1e64fef6f1523a/transformed/jetified-window-1.2.0/AndroidManifest.xml:27:13-51
+122            android:required="false" />
+122-->[androidx.window:window:1.2.0] /root/.gradle/caches/transforms-3/01568f3724952e4a8f1e64fef6f1523a/transformed/jetified-window-1.2.0/AndroidManifest.xml:28:13-37
+123
+124        <provider
+124-->[androidx.lifecycle:lifecycle-process:2.7.0] /root/.gradle/caches/transforms-3/77c4188ef21b48d0fd676348051bd999/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:24:9-32:20
+125            android:name="androidx.startup.InitializationProvider"
+125-->[androidx.lifecycle:lifecycle-process:2.7.0] /root/.gradle/caches/transforms-3/77c4188ef21b48d0fd676348051bd999/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:25:13-67
+126            android:authorities="com.fastflow.vpn.androidx-startup"
+126-->[androidx.lifecycle:lifecycle-process:2.7.0] /root/.gradle/caches/transforms-3/77c4188ef21b48d0fd676348051bd999/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:26:13-68
+127            android:exported="false" >
+127-->[androidx.lifecycle:lifecycle-process:2.7.0] /root/.gradle/caches/transforms-3/77c4188ef21b48d0fd676348051bd999/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:27:13-37
+128            <meta-data
+128-->[androidx.lifecycle:lifecycle-process:2.7.0] /root/.gradle/caches/transforms-3/77c4188ef21b48d0fd676348051bd999/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:29:13-31:52
+129                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+129-->[androidx.lifecycle:lifecycle-process:2.7.0] /root/.gradle/caches/transforms-3/77c4188ef21b48d0fd676348051bd999/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:30:17-78
+130                android:value="androidx.startup" />
+130-->[androidx.lifecycle:lifecycle-process:2.7.0] /root/.gradle/caches/transforms-3/77c4188ef21b48d0fd676348051bd999/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:31:17-49
+131            <meta-data
+131-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/transforms-3/13dd6fcea0bda33bca575ebf2e890519/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:29:13-31:52
+132                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+132-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/transforms-3/13dd6fcea0bda33bca575ebf2e890519/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:30:17-85
+133                android:value="androidx.startup" />
+133-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/transforms-3/13dd6fcea0bda33bca575ebf2e890519/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:31:17-49
+134        </provider>
+135
+136        <receiver
+136-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/transforms-3/13dd6fcea0bda33bca575ebf2e890519/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:34:9-52:20
+137            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+137-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/transforms-3/13dd6fcea0bda33bca575ebf2e890519/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:35:13-76
+138            android:directBootAware="false"
+138-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/transforms-3/13dd6fcea0bda33bca575ebf2e890519/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:36:13-44
+139            android:enabled="true"
+139-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/transforms-3/13dd6fcea0bda33bca575ebf2e890519/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:37:13-35
+140            android:exported="true"
+140-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/transforms-3/13dd6fcea0bda33bca575ebf2e890519/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:38:13-36
+141            android:permission="android.permission.DUMP" >
+141-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/transforms-3/13dd6fcea0bda33bca575ebf2e890519/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:39:13-57
+142            <intent-filter>
+142-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/transforms-3/13dd6fcea0bda33bca575ebf2e890519/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:40:13-42:29
+143                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+143-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/transforms-3/13dd6fcea0bda33bca575ebf2e890519/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:41:17-91
+143-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/transforms-3/13dd6fcea0bda33bca575ebf2e890519/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:41:25-88
+144            </intent-filter>
+145            <intent-filter>
+145-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/transforms-3/13dd6fcea0bda33bca575ebf2e890519/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:43:13-45:29
+146                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+146-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/transforms-3/13dd6fcea0bda33bca575ebf2e890519/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:44:17-85
+146-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/transforms-3/13dd6fcea0bda33bca575ebf2e890519/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:44:25-82
+147            </intent-filter>
+148            <intent-filter>
+148-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/transforms-3/13dd6fcea0bda33bca575ebf2e890519/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:46:13-48:29
+149                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+149-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/transforms-3/13dd6fcea0bda33bca575ebf2e890519/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:47:17-88
+149-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/transforms-3/13dd6fcea0bda33bca575ebf2e890519/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:47:25-85
+150            </intent-filter>
+151            <intent-filter>
+151-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/transforms-3/13dd6fcea0bda33bca575ebf2e890519/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:49:13-51:29
+152                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+152-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/transforms-3/13dd6fcea0bda33bca575ebf2e890519/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:50:17-95
+152-->[androidx.profileinstaller:profileinstaller:1.3.1] /root/.gradle/caches/transforms-3/13dd6fcea0bda33bca575ebf2e890519/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:50:25-92
+153            </intent-filter>
+154        </receiver>
+155    </application>
+156
+157</manifest>
